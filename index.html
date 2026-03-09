@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HerbalNepal | Organic Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <nav class="bg-green-800 text-white p-4 sticky top-0 z-50 shadow-md">
+        <div class="container mx-auto flex justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMenu()" class="text-xl hover:text-orange-400 transition"><i class="fas fa-bars"></i></button>
+                <h1 class="text-xl font-bold italic hidden md:block">HerbalNepal</h1>
+            </div>
+            <div class="flex-grow max-w-md relative">
+                <input type="text" id="searchInput" onkeyup="searchProducts()" placeholder="Search herbs, oils..." 
+                    class="w-full p-2 pl-10 rounded-full text-black text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+            </div>
+            <div class="flex items-center gap-5">
+                <button onclick="openWallet()" class="text-xs font-bold bg-green-700 px-3 py-1.5 rounded-lg border border-green-600 hover:bg-green-600">WALLET</button>
+                <div class="relative cursor-pointer" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart text-xl"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-orange-500 text-[10px] rounded-full px-1.5 font-bold">0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="whatsapp-bot" class="fixed bottom-5 left-5 z-[200]">
+        <div id="chat-window" class="hidden bg-white w-72 rounded-2xl shadow-2xl overflow-hidden mb-4 border border-gray-100">
+            <div class="bg-green-700 p-4 text-white flex items-center gap-3">
+                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                    <i class="fab fa-whatsapp text-green-700 text-2xl"></i>
+                </div>
+                <div>
+                    <p class="font-bold text-sm">Herbal Support</p>
+                    <p class="text-[10px] text-green-100">Online | Typical reply in minutes</p>
+                </div>
+            </div>
+            <div class="p-4 bg-gray-50 text-xs space-y-3 h-48 overflow-y-auto">
+                <p class="bg-white p-2 rounded-lg shadow-sm">Namaste! K help garna sakxu?</p>
+                <p class="bg-white p-2 rounded-lg shadow-sm">Hajur lai kunai jari-buti ko barema sodhnu x ki?</p>
+            </div>
+            <div class="p-3 bg-white border-t">
+                <input type="text" id="wa-input" placeholder="Type a message..." class="w-full border rounded-full px-3 py-2 text-xs focus:outline-none">
+                <button onclick="sendWhatsAppMsg()" class="w-full mt-2 bg-green-600 text-white text-[10px] py-2 rounded-full font-bold uppercase">Chat Now</button>
+            </div>
+        </div>
+        <button onclick="toggleChat()" class="bg-green-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl hover:scale-110 transition duration-300">
+            <i class="fab fa-whatsapp"></i>
+            <span class="absolute -top-1 -right-1 flex h-4 w-4">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-4 w-4 bg-orange-500"></span>
+            </span>
+        </button>
+    </div>
+    <div id="side-menu" class="fixed top-0 left-0 h-full w-72 bg-white shadow-2xl transform -translate-x-full transition-transform duration-300 z-[100] overflow-y-auto no-scrollbar">
+        <div class="p-6 bg-green-900 text-white text-center relative">
+            <button onclick="toggleMenu()" class="absolute right-4 top-4 text-white text-xl">×</button>
+            <div class="w-16 h-16 bg-white rounded-full mx-auto mb-3 flex items-center justify-center">
+                <i class="fas fa-leaf text-green-800 text-2xl"></i>
+            </div>
+            <h2 class="font-bold text-lg">Herbal Nepal Pvt. Ltd.</h2>
+        </div>
+        <div class="p-6 space-y-6">
+            <section>
+                <h3 class="menu-title">About Us</h3>
+                <p class="text-xs text-gray-600 leading-relaxed">Pure Himalayan organic products since 2020. Quality guaranteed.</p>
+            </section>
+            <section>
+                <h3 class="menu-title">Contact</h3>
+                <div class="text-[11px] space-y-2 text-gray-700">
+                    <p><i class="fas fa-phone mr-2 text-green-700"></i>+977-9809407713</p>
+                    <p><i class="fas fa-envelope mr-2 text-green-700"></i>help@herbalnepal.com</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <main class="container mx-auto p-4 min-h-screen">
+        <h2 class="section-heading">Our Products</h2>
+        <div id="product-list" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+    </main>
+
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-72 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-[90] flex flex-col">
+        <div class="p-4 bg-green-800 text-white flex justify-between items-center">
+            <span class="font-bold tracking-widest uppercase text-sm">My Cart</span>
+            <button onclick="toggleCart()" class="text-2xl">&times;</button>
+        </div>
+        <div id="cart-items" class="flex-grow p-4 overflow-y-auto space-y-3 no-scrollbar"></div>
+        <div class="p-4 border-t bg-gray-50">
+            <div class="flex justify-between font-bold text-lg mb-4 text-green-900">
+                <span>Total:</span>
+                <span>Rs. <span id="cart-total">0</span></span>
+            </div>
+            <button onclick="openWallet()" class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold shadow-lg uppercase text-xs">Checkout</button>
+        </div>
+    </div>
+
+    <div id="wallet-modal" class="fixed inset-0 bg-black/70 hidden z-[110] flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white p-6 rounded-2xl max-w-sm w-full text-center relative shadow-2xl">
+            <h2 class="font-extrabold text-green-800 mb-2 text-lg italic">HERBAL PAY QR</h2>
+            <p class="text-[10px] text-gray-500 mb-4">Scan & Pay then click confirm</p>
+            <img src="images/bank.jpg.jpg" alt="QR" class="mx-auto w-48 h-48 rounded-lg mb-4 border">
+            
+            <input type="text" id="cust-name" placeholder="Your Name" class="w-full border p-2 rounded mb-2 text-sm">
+            <input type="text" id="cust-phone" placeholder="Phone Number" class="w-full border p-2 rounded mb-4 text-sm">
+
+            <button id="confirmBtn" class="w-full bg-green-600 text-white py-3 rounded-xl font-bold uppercase text-xs">Confirm Order</button>
+            <button onclick="closeWallet()" class="mt-2 text-gray-500 text-xs">Close</button>
+        </div>
+    </div>
+
+    <div id="success-popup" class="fixed top-24 right-5 bg-green-700 text-white px-6 py-3 rounded-xl shadow-2xl hidden z-[120]">
+        ✅ Item added to cart!
+    </div>
+
+    <script src="script.js"></script>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBGk8yhlOug9krpLA8w-lWybDW8pZgkCgc",
+            authDomain: "my-herbal.firebaseapp.com",
+            projectId: "my-herbal",
+            storageBucket: "my-herbal.firebasestorage.app",
+            messagingSenderId: "717348772745",
+            appId: "1:717348772745:web:024095bbcf970f9df11f58"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.getElementById('confirmBtn').addEventListener('click', async () => {
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const total = document.getElementById('cart-total').innerText;
+
+            if(!name || !phone) return alert("Please enter Name and Phone!");
+
+            const orderData = {
+                customerName: name,
+                customerPhone: phone,
+                totalPrice: total,
+                items: cart, 
+                status: "Unpaid",
+                orderTime: new Date().toLocaleString()
+            };
+
+            try {
+                await addDoc(collection(db, "orders"), orderData);
+                let msg = `*NEW ORDER FROM ${name}*\nPhone: ${phone}\nTotal: Rs. ${total}\nCheck Admin Panel for details.`;
+                window.open(`https://wa.me/9779809407713?text=${encodeURIComponent(msg)}`);
+                localStorage.removeItem('herbal_cart');
+                location.reload();
+            } catch (e) {
+                alert("Error: " + e.message);
+            }
+        });
+    </script>
+</body>
+</html>

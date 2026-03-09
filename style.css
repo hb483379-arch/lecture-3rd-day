@@ -1,0 +1,54 @@
+/* Custom Scrollbar Hide */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Reusable Components */
+.menu-title {
+    font-weight: bold;
+    color: #166534; /* Green-800 */
+    border-bottom: 2px solid #f97316; /* Orange-500 */
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+}
+
+.section-heading {
+    font-weight: bold;
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #f97316;
+    padding-left: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Chatbot Specific Styles */
+#chat-window {
+    transition: all 0.3s ease;
+    transform-origin: bottom left;
+}
+
+#chat-window.hidden {
+    display: none;
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+#whatsapp-bot button:active {
+    transform: scale(0.9);
+}
+
+/* Animation */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+.animate-bounce {
+    animation: bounce 0.5s ease infinite;
+}
